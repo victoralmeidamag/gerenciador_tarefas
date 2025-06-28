@@ -11,19 +11,19 @@ class CreateTaskRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string'],
-            'description' => ['nullable', 'string'],
-            'assignee_id' => ['required', 'uuid', 'exists:users,id'],
+            'name'        => ['required','string'],
+            'description' => ['nullable','string'],
+            'assignee_id' => ['required','uuid','exists:users,id'],
         ];
     }
 
-    public function toCommand(): CreateTask
+    public function toCommand(string $projectId): CreateTask
     {
         return new CreateTask(
-            projectId: Uuid::fromString($this->route('id')),
-            name: $this->name,
-            description: $this->description,
-            assigneeId: Uuid::fromString($this->assignee_id)
+            projectId: Uuid::fromString($projectId),
+            assigneeId: Uuid::fromString($this->input('assignee_id')),
+            name: $this->input('name'),
+            description: $this->input('description'),
         );
     }
 }

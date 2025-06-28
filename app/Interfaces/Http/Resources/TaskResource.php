@@ -9,12 +9,13 @@ class TaskResource extends JsonResource
     public function toArray($request): array
     {
         return [
-            'id' => (string) $this->id,
-            'project_id' => (string) $this->projectId,
-            'name' => $this->name,
+            'id'          => $this->id,
+            'project_id'  => $this->project_id,
+            'assignee_id' => $this->assignee_id,
+            'assignee_name' => $this->assignee->name ?? null,
+            'name'        => $this->name,
             'description' => $this->description,
-            'assignee_id' => (string) $this->assigneeId,
-            'status' => $this->status->value,
+            'status'      => $this->status,
         ];
     }
 }

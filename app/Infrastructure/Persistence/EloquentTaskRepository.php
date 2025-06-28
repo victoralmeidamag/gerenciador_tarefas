@@ -15,28 +15,46 @@ class EloquentTaskRepository implements TaskRepository
         TaskModel::updateOrCreate(
             ['id' => $task->id->toString()],
             [
-                'project_id' => $task->projectId->toString(),
-                'name' => $task->name,
-                'description' => $task->description,
+                'project_id'  => $task->projectId->toString(),
                 'assignee_id' => $task->assigneeId->toString(),
-                'status' => $task->status->value,
+                'name'        => $task->name,
+                'description' => $task->description,
+                'status'      => $task->status->value,
             ]
         );
     }
 
     public function find(Uuid $id): ?Task
     {
-        $model = TaskModel::find($id->toString());
-        
-        if (!$model) return null;
+        $m = TaskModel::find($id->toString());
+        if (!$m) return null;
+        return new Task(
+            Uuid::fromString($m->id),
+            Uuid::fromString($m->project_id),
+            Uuid::fromString($m->assignee_id),
+            $m->name,
+            $m->description,
+            TaskStatus::from($m->status)
+        );
+    }
 
-        return Task::fromArray([
-            'id' => Uuid::fromString($model->id),
-            'projectId' => Uuid::fromString($model->project_id),
-            'name' => $model->name,
-            'description' => $model->description,
-            'assigneeId' => Uuid::fromString($model->assignee_id),
-            'status' => TaskStatus::from($model->status),
-        ]);
+    public function listByProject(Uuid $projectId): array
+    {
+        return TaskModel::where('project_id', $projectId->toString())
+            ->with('assignee')
+            ->get()
+            ->map(fn($m) => new Task(
+                Uuid::fromString($m->id),
+                Uuid::fromString($m->project_id),
+                Uuid::fromString($m->assignee_id),
+                $m->name,
+                $m->description,
+                TaskStatus::from($m->status)
+            ))->all();
+    }
+
+    public function delete(Uuid $id): void
+    {
+        TaskModel::where('id', $id->toString())->delete();
     }
 }

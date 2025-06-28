@@ -9,4 +9,6 @@ interface TaskRepository
 {
     public function save(Task $task): void;
     public function find(Uuid $id): ?Task;
+    public function listByProject(Uuid $projectId): array;
+    public function delete(Uuid $id): void;
 }

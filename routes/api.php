@@ -20,16 +20,13 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('me',[GetUserController::class, 'me']);
     Route::post('logout',[LogoutController::class, 'logout']);
+
+    //Rotas de projetos
+    
     Route::post('projects', CreateProjectController::class);
     Route::get('projects', ListProjectsController::class);
     Route::get('projects/{id}', GetProjectController::class);
     Route::put('projects/{id}', UpdateProjectController::class);
     Route::delete('projects/{id}', DeleteProjectController::class);
-    // Route::apiResource('projects', ProjectController::class);
-    // Route::get( 'projects/{project}/tasks', [TaskController::class, 'index']);
-    // Route::post('projects/{project}/tasks', [TaskController::class, 'store']);
 
-    // Route::apiResource('tasks', TaskController::class)->only([
-    //     'show', 'update', 'destroy'
-    // ]);
 });
