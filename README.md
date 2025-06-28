@@ -34,7 +34,7 @@ Um gerenciador de tarefas feito para teste técnico da empresa HCOSTA, foi const
     ```
 
 
-[Clique aqui para importar a Collection no Postman](docs/postman/doc_api.postman_collection.json)
+[Acesse aqui a documentação da API](http://localhost/api/documentation)
 
 ## Estrutura do Projeto
 
