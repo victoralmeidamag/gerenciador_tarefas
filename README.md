@@ -32,9 +32,8 @@ Um gerenciador de tarefas feito para teste técnico da empresa HCOSTA, foi const
     ```bash
     alias sail='sh $([ -f sail ] && echo sail || echo vendor/bin/sail)` | |
     ```
-
-
-[Acesse aqui a documentação da API](http://localhost/api/documentation)
+5. Assim que subir os containers: acessar Documentação da API
+   [Acesse aqui a documentação da API](http://localhost/api/documentation)
 
 ## Estrutura do Projeto
 
