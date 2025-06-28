@@ -57,4 +57,16 @@ class EloquentTaskRepository implements TaskRepository
     {
         TaskModel::where('id', $id->toString())->delete();
     }
+
+    public function listAll(): array
+    {
+        return TaskModel::with('assignee')->get()->map(fn($m) => new Task(
+            Uuid::fromString($m->id),
+            Uuid::fromString($m->project_id),
+            Uuid::fromString($m->assignee_id),
+            $m->name,
+            $m->description,
+            TaskStatus::from($m->status)
+        ))->all();
+    }
 }
