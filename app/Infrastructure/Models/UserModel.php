@@ -46,8 +46,8 @@ class UserModel extends Authenticatable
     protected function id(): Attribute
     {
         return Attribute::make(
-            get: fn ($value) => Uuid::fromString($value),
-            set: fn (Uuid $uuid) => $uuid->toString(),
+            get: fn ($value) => $value ? Uuid::fromString($value) : null,
+            set: fn ($uuid) => (string) ($uuid instanceof Uuid ? $uuid : Uuid::fromString($uuid)),
         );
     }
 

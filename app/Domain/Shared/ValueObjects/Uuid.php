@@ -2,9 +2,10 @@
 
 namespace App\Domain\Shared\ValueObjects;
 
+use JsonSerializable;
 use Ramsey\Uuid\Uuid as BaseUuid;
 
-final class Uuid
+final class Uuid implements JsonSerializable
 {
     private function __construct(private string $value) {}
 
@@ -27,6 +28,10 @@ final class Uuid
     }
 
     public function toString(): string
+    {
+        return $this->value;
+    }
+    public function jsonSerialize(): mixed
     {
         return $this->value;
     }
