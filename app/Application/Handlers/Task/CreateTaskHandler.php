@@ -32,11 +32,10 @@ final class CreateTaskHandler
         $this->repo->save($task);
 
         event(new TaskCreated($task));
-
+        
         $assigneeEmail = $this->users->findEmailById($cmd->assigneeId);
 
-        $this->notifications->taskCreated($task, $assigneeEmail);
-
+        $this->notifications->taskCreated($task, $assigneeEmail->email);
 
         return $task;
     }
