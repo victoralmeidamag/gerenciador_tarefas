@@ -11,6 +11,6 @@ final readonly class UpdateTask
         public Uuid $id,
         public string $name,
         public ?string $description,
-        public TaskStatus $status,
+        public ?TaskStatus $status,
     ) {}
 }

@@ -34,7 +34,8 @@ class EloquentTaskRepository implements TaskRepository
             Uuid::fromString($m->assignee_id),
             $m->name,
             $m->description,
-            TaskStatus::from($m->status)
+            
+            $this->mapStatus($m->status)
         );
     }
 
@@ -49,7 +50,7 @@ class EloquentTaskRepository implements TaskRepository
                 Uuid::fromString($m->assignee_id),
                 $m->name,
                 $m->description,
-                TaskStatus::from($m->status)
+                $this->mapStatus($m->status)
             ))->all();
     }
 
@@ -66,7 +67,13 @@ class EloquentTaskRepository implements TaskRepository
             Uuid::fromString($m->assignee_id),
             $m->name,
             $m->description,
-            TaskStatus::from($m->status)
+            $this->mapStatus($m->status)
         ))->all();
+    }
+
+    private function mapStatus(string $value): TaskStatus
+    {
+        return TaskStatus::tryFrom($value)
+            ?? TaskStatus::fromCode($value);
     }
 }

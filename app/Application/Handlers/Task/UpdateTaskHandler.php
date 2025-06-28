@@ -7,10 +7,12 @@ use App\Application\Contracts\TaskRepository;
 use App\Domain\Shared\ValueObjects\Uuid;
 use App\Domain\Task\Entities\Task;
 use App\Domain\User\Exceptions\TaskForbiddenException;
+use App\Domain\Shared\Enums\TaskStatus;
 
 final class UpdateTaskHandler
 {
     public function __construct(private TaskRepository $repo) {}
+
     public function __invoke(UpdateTask $cmd): Task
     {
         $existing = $this->repo->find($cmd->id);
@@ -25,12 +27,12 @@ final class UpdateTaskHandler
         }
 
         $updated = new Task(
-            $cmd->id,
+            $existing->id,
             $existing->projectId,
             $existing->assigneeId,
-            $cmd->name,
-            $cmd->description,
-            $cmd->status,
+            $cmd->name ?? $existing->name,
+            $cmd->description ?? $existing->description,
+            $cmd->status ?? $existing->status
         );
 
         $this->repo->save($updated);

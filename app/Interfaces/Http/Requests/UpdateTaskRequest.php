@@ -3,6 +3,7 @@
 namespace App\Interfaces\Http\Requests;
 
 use App\Application\Commands\UpdateTask;
+use App\Domain\Shared\Enums\TaskStatus;
 use Illuminate\Foundation\Http\FormRequest;
 use App\Domain\Shared\ValueObjects\Uuid;
 
@@ -11,9 +12,9 @@ class UpdateTaskRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name'        => ['required','string'],
+            'name'        => ['nullable','string'],
             'description' => ['nullable','string'],
-            'status'      => ['required','in:TODO,IN_PROGRESS,DONE'],
+            'status'      => ['nullable','in:TODO,IN_PROGRESS,DONE'],
         ];
     }
 
@@ -23,7 +24,9 @@ class UpdateTaskRequest extends FormRequest
             Uuid::fromString($taskId),
             $this->input('name'),
             $this->input('description'),
-            $this->input('status'),
+            $this->filled('status')
+                ? TaskStatus::fromCode($this->input('status'))
+                : null,
         );
     }
 }

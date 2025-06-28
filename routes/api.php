@@ -7,6 +7,7 @@ use App\Interfaces\Http\Controllers\Api\Project\ListProjectsController;
 use App\Interfaces\Http\Controllers\Api\Project\UpdateProjectController;
 use App\Interfaces\Http\Controllers\Api\Task\CreateTaskController;
 use App\Interfaces\Http\Controllers\Api\Task\DeleteTaskController;
+use App\Interfaces\Http\Controllers\Api\Task\GetTaskController;
 use App\Interfaces\Http\Controllers\Api\Task\ListTasksController;
 use App\Interfaces\Http\Controllers\Api\Task\UpdateTaskController;
 use App\Interfaces\Http\Controllers\Api\User\GetUserController;
@@ -34,7 +35,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
     //Rotas de Tasks
     Route::get('projects/{projectId}/tasks', [ListTasksController::class, 'listProjectTasks']);
-    Route::get('tasks/{id}', [ListTasksController::class, 'listALl']);
+    Route::get('tasks/{id}', GetTaskController::class);
+    Route::get('tasks', [ListTasksController::class, 'listAll']);
     Route::post('projects/{projectId}/tasks', CreateTaskController::class);
     Route::put('tasks/{id}', UpdateTaskController::class);
     Route::delete('/tasks/{id}', DeleteTaskController::class);
