@@ -6,28 +6,25 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('tasks', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('project_id')->constrained('projects');
+            $table->uuid('id')->primary();
+            $table->uuid('project_id');
+            $table->uuid('assignee_id');
             $table->string('name');
             $table->text('description')->nullable();
-            $table->foreignId('assignee_id')->constrained('users')->references('id')->on('users');
             $table->string('status');
             $table->timestamps();
+
+            $table->foreign('project_id')->references('id')->on('projects')->onDelete('cascade');
+            $table->foreign('assignee_id')->references('id')->on('users')->onDelete('cascade');
 
             $table->index('project_id');
             $table->index('assignee_id');
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('tasks');

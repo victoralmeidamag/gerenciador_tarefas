@@ -21,6 +21,11 @@ final class Uuid
         return new self($value);
     }
 
+    public function __toString(): string
+    {
+        return $this->toString();
+    }
+
     public function toString(): string
     {
         return $this->value;

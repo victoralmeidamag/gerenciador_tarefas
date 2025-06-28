@@ -3,8 +3,10 @@
 namespace App\Providers;
 
 use App\Application\Contracts\AppLogger;
+use App\Application\Contracts\ProjectRepository;
 use App\Application\Contracts\UserRepository;
 use App\Application\Services\AuthTokenService;
+use App\Infrastructure\Persistence\EloquentProjectRepository;
 use App\Infrastructure\Persistence\EloquentUserRepository;
 use Illuminate\Support\ServiceProvider;
 use App\Application\Contracts\TaskRepository;
@@ -23,5 +25,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(AppLogger::class,MongoLogger::class);
         $this->app->bind(UserRepository::class, EloquentUserRepository::class);
         $this->app->singleton(AuthTokenService::class);
+        $this->app->bind(ProjectRepository::class, EloquentProjectRepository::class);
+
     }
 }
