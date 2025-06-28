@@ -12,7 +12,10 @@ class MongoLogger implements AppLogger
 
     public function __construct(Client $client)
     {
-        $this->collection = $client->selectCollection(env('MONGODB_DATABASE'), 'logs');
+          $this->collection = $client->selectCollection(
+        config('database.connections.mongodb.database'), // mais confiável que `env()`
+        'logs'
+    );
     }
 
     public function log(string $message, array $context = []): void

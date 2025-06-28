@@ -7,7 +7,7 @@ use App\Application\Contracts\TaskRepository;
 use App\Domain\Shared\ValueObjects\Uuid;
 use App\Domain\Task\Entities\Task;
 use App\Domain\User\Exceptions\TaskForbiddenException;
-use App\Domain\Shared\Enums\TaskStatus;
+use App\Events\TaskUpdated;
 
 final class UpdateTaskHandler
 {
@@ -36,6 +36,9 @@ final class UpdateTaskHandler
         );
 
         $this->repo->save($updated);
+
+        event(new TaskUpdated($updated));
+
         return $updated;
     }
 }

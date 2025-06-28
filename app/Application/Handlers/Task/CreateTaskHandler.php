@@ -7,6 +7,7 @@ use App\Application\Contracts\TaskRepository;
 use App\Domain\Task\Entities\Task;
 use App\Domain\Shared\Enums\TaskStatus;
 use App\Domain\Shared\ValueObjects\Uuid;
+use App\Events\TaskCreated;
 
 final class CreateTaskHandler
 {
@@ -23,6 +24,9 @@ final class CreateTaskHandler
             TaskStatus::TODO,
         );
         $this->repo->save($task);
+
+        event(new TaskCreated($task));
+
         return $task;
     }
 }

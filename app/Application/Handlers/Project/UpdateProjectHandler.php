@@ -7,6 +7,7 @@ use App\Application\Contracts\ProjectRepository;
 use App\Domain\Project\Entities\Project;
 use App\Domain\Project\Exceptions\ProjectForbiddenException;
 use App\Domain\Shared\ValueObjects\Uuid;
+use App\Events\ProjectUpdated;
 use Illuminate\Support\Facades\Auth;
 
 final class UpdateProjectHandler
@@ -31,6 +32,8 @@ final class UpdateProjectHandler
         $updated = new Project($cmd->id, $cmd->name, $cmd->responsibleId);
 
         $this->repo->save($updated);
+
+        event(new ProjectUpdated($updated));
 
         return $updated;
     }
