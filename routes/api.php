@@ -20,6 +20,9 @@ use Illuminate\Support\Facades\Route;
 Route::post('register',[RegisterUserController::class, 'register']);
 Route::post('login',[LoginController::class, 'login']);
 
+Route::get('/docs/postman', function () {
+    return response()->file(base_path('docs/postman/doc_api.postman_collection.json'));
+});
 
 Route::middleware('auth:sanctum')->group(function () {
 

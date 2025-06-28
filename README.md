@@ -1,61 +1,119 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Gerenciador de Tarefas
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Um gerenciador de tarefas feito para teste técnico da empresa HCOSTA, foi construído com **Laravel**, utilizando **arquitetura hexagonal (ports & adapters)**. Integra **MongoDB**, **RabbitMQ** e autenticação via **Sanctum** para uma experiência robusta e performática.
 
-## About Laravel
+## Funcionalidades
+- Gerenciamento de tarefas e projetos com entidades bem definidas
+- Arquitetura hexagonal para desacoplamento e manutenibilidade
+- Suporte a UUID como chave primária para maior segurança e escalabilidade
+- Integração com MongoDB para dados não relacionais
+- Filas assíncronas com RabbitMQ
+- Cache e gerenciamento de jobs com Redis e Laravel Horizon
+- Testes automatizados para garantir qualidade
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Instalação Rápida
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+1. Clone o repositório:
+   ```bash
+   git clone https://github.com/victoralmeidamag/gerenciador_tarefas.git
+   cd gerenciador_tarefas
+   ```
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+2. Dê permissão ao script de bootstrap:
+   ```bash
+   chmod +x bootstrap.sh
+   ```
 
-## Learning Laravel
+3. Execute o script para instalar dependências, subir containers e migrar o banco:
+   ```bash
+   ./bootstrap.sh
+   ```
+4. *opcional (Serve para rodar os comandos usando somente sail. Ex sail down, sail up -d)
+    ```bash
+    alias sail='sh $([ -f sail ] && echo sail || echo vendor/bin/sail)` | |
+    ```
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+[Clique aqui para importar a Collection no Postman](docs/postman/doc_api.postman_collection.json)
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Estrutura do Projeto
 
-## Laravel Sponsors
+```plaintext
+app/
+├── Application         # Casos de uso e lógica de aplicação
+│   ├── Commands        # Dados imutáveis para entrada de ações
+│   ├── Contracts       # Interfaces (portas) a serem implementadas
+│   ├── Handlers        # Orquestradores de ações (use cases)
+│   ├── Queries         # Consultas específicas
+│   ├── Services        # Regras auxiliares do domínio
+│   └── ViewModels      # Estruturas de resposta
+├── Domain              # Entidades e regras de negócio
+│   ├── Project         # Entidade Project
+│   ├── Shared          # Value Objects (ex.: UUID)
+│   ├── Task            # Entidade Task
+│   └── User            # Entidade User
+├── Infrastructure      # Implementações concretas (adapters)
+│   ├── Models          # Modelos Eloquent
+│   ├── Mongo           # Integração com MongoDB
+│   ├── Persistence     # Repositórios Eloquent
+│   └── RabbitMQ        # Producers e Consumers
+├── Interfaces          # Camada de entrada (ex.: HTTP Controllers)
+├── Events              # Eventos do domínio
+├── Listeners           # Listeners para eventos
+├── Providers           # Configurações e bindings
+```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+##  Por que UUID como chave primária?
 
-### Premium Partners
+Utilizamos **UUIDv7** (via `ramsey/uuid`) em vez de IDs auto-incrementais pelos seguintes motivos:
+- **Independência do banco**: Evita colisões em sistemas distribuídos ou microsserviços.
+- **Segurança**: Dificulta enumeração de registros (ex.: `/users/1`, `/users/2`).
+- **Escalabilidade**: Facilita replicação e sincronização entre bancos.
+- **Testes**: Não depende de auto-incremento, simplificando mocks.
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+O Value Object `Uuid` garante tipagem forte, imutabilidade e serialização automática.
 
-## Contributing
+##  MongoDB
+Usado como banco complementar para cenários não relacionais (logs, documentos, testes paralelos). Conectado via `jenssegers/laravel-mongodb`.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+```plaintext
+app/Infrastructure/Mongo/
+```
 
-## Code of Conduct
+##  RabbitMQ
+Broker de mensagens assíncronas para:
+- Filas de notificações
+- Processamento em background
+- Desacoplamento entre ações
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Estrutura:
+```plaintext
+app/Infrastructure/RabbitMQ/  # Producers e Consumers
+```
+Integração via driver `rabbitmq` no Laravel Queue.
 
-## Security Vulnerabilities
+##  Princípios SOLID
+| Princípio | Aplicação |
+|-----------|-----------|
+| **S**ingle Responsibility | Cada classe tem uma única responsabilidade (ex.: `RegisterUserHandler` só orquestra registros). |
+| **O**pen/Closed | Classes como `Uuid`, `Handlers` e `Listeners` são extensíveis sem modificação. |
+| **L**iskov Substitution | Repositórios (ex.: `UserRepository`) são injetados via interfaces, permitindo substituição. |
+| **I**nterface Segregation | Interfaces pequenas e focadas (ex.: `UserRepositoryInterface`). |
+| **D**ependency Inversion | Dependências externas injetadas via construtor (ex.: repositórios, serviços). |
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
 
-## License
+## 🛠️ Tecnologias Utilizadas
+- **Laravel 12**
+- **PHP 8.4**
+- **MongoDB**
+- **PostgreSQL**
+- **RabbitMQ**
+- **Laravel Sail**
+- **Docker Compose**
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+##  Scripts Úteis
+| Script                        | Descrição                                      |
+|-------------------------------|------------------------------------------------|
+| `./bootstrap.sh`              | Instala dependências, sobe containers e migra o banco |
+| `sail artisan queue:work`     | Roda o worker de filas                         |
+| `sail artisan horizon`        | Inicia o Laravel Horizon para gerenciamento de jobs |
