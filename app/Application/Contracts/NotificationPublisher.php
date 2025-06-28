@@ -6,5 +6,5 @@ use App\Domain\Task\Entities\Task;
 
 interface NotificationPublisher
 {
-    public function taskCreated(Task $task): void;
+    public function taskCreated(Task $task, string $recipientEmail): void;
 }

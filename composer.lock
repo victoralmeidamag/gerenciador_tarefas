@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "97dd67dbcb4f1a657d807d1bacf5d37e",
+    "content-hash": "031606b1598b096fc45c47797428ad76",
     "packages": [
         {
             "name": "brick/math",
@@ -6269,6 +6269,70 @@
                 "source": "https://github.com/tijsverkoyen/CssToInlineStyles/tree/v2.3.0"
             },
             "time": "2024-12-21T16:25:41+00:00"
+        },
+        {
+            "name": "vladimir-yuldashev/laravel-queue-rabbitmq",
+            "version": "v14.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/vyuldashev/laravel-queue-rabbitmq.git",
+                "reference": "ca6cd22777b63e1be5b5f7d22f3e3abc50249df8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/vyuldashev/laravel-queue-rabbitmq/zipball/ca6cd22777b63e1be5b5f7d22f3e3abc50249df8",
+                "reference": "ca6cd22777b63e1be5b5f7d22f3e3abc50249df8",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "illuminate/queue": "^10.0|^11.0|^12.0",
+                "php": "^8.0",
+                "php-amqplib/php-amqplib": "^v3.6"
+            },
+            "require-dev": {
+                "laravel/framework": "^9.0|^10.0|^11.0|^12.0",
+                "laravel/horizon": "^5.0",
+                "laravel/pint": "^1.2",
+                "mockery/mockery": "^1.0",
+                "orchestra/testbench": "^7.0|^8.0|^9.0|^10.0",
+                "phpunit/phpunit": "^10.0|^11.0"
+            },
+            "suggest": {
+                "ext-pcntl": "Required to use all features of the queue consumer."
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "VladimirYuldashev\\LaravelQueueRabbitMQ\\LaravelQueueRabbitMQServiceProvider"
+                    ]
+                },
+                "branch-alias": {
+                    "dev-master": "13.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "VladimirYuldashev\\LaravelQueueRabbitMQ\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Vladimir Yuldashev",
+                    "email": "misterio92@gmail.com"
+                }
+            ],
+            "description": "RabbitMQ driver for Laravel Queue. Supports Laravel Horizon.",
+            "support": {
+                "issues": "https://github.com/vyuldashev/laravel-queue-rabbitmq/issues",
+                "source": "https://github.com/vyuldashev/laravel-queue-rabbitmq/tree/v14.2.0"
+            },
+            "time": "2025-04-24T16:47:00+00:00"
         },
         {
             "name": "vlucas/phpdotenv",

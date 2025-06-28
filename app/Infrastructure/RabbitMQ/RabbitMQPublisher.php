@@ -9,12 +9,13 @@ use App\Infrastructure\RabbitMQ\Jobs\SendNotificationJob;
 
 class RabbitMQPublisher implements NotificationPublisher
 {
-    public function taskCreated(Task $task): void
+    public function taskCreated(Task $task, string $recipientEmail): void
     {
         Queue::connection('rabbitmq')->push(
             new SendNotificationJob([
-                'event' => 'task_created',
-                'task' => $task->toArray()
+                'event'     => 'task_created',
+                'task'      => $task->toArray(),
+                'recipient' => $recipientEmail,
             ])
         );
     }

@@ -2,10 +2,12 @@
 
 namespace App\Domain\User\Entities;
 
+use App\Domain\Shared\ValueObjects\Uuid;
+
 final class User
 {
     public function __construct(
-        public ?int $id,
+        public ?Uuid $id,
         public string $name,
         public string $email,
         public string $passwordHash,
@@ -14,7 +16,7 @@ final class User
     public function toArray(): array
     {
         return [
-            'id'    => $this->id,
+            'id'    => $this->id?->toString(),
             'name'  => $this->name,
             'email' => $this->email,
         ];

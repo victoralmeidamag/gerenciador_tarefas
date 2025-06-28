@@ -13,6 +13,15 @@ class SendNotificationJob implements ShouldQueue
 
     public function __construct(public array $data) {}
 
+    public function connection(): string 
+    { 
+        return 'rabbitmq'; 
+    }
+    public function queue(): string      
+    { 
+        return 'notifications'; 
+    }
+
     public function handle(): void
     {
         \Log::info('Notificação enviada via RabbitMQ', $this->data);
